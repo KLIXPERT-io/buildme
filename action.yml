@@ -1,0 +1,59 @@
+name: 'Build Projects'
+description: 'Automatically builds projects with .buildme files'
+author: 'Florian Narr - KLIXPERT.io'
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '18'
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        
+    - name: Find and build projects
+      shell: bash
+      run: |
+        echo "🔍 Searching for .buildme files..."
+        BUILDME_FILES=$(find . -name ".buildme" -not -path "*/node_modules/*" -not -path "*/\.*")
+        
+        if [ -z "$BUILDME_FILES" ]; then
+          echo "ℹ️ No .buildme files found."
+          exit 0
+        fi
+        
+        echo "🔎 Found .buildme files:"
+        echo "$BUILDME_FILES"
+        
+        for FILE in $BUILDME_FILES; do
+          DIR=$(dirname "$FILE")
+          echo "📂 Processing directory: $DIR"
+          
+          if [ -f "$DIR/package.json" ]; then
+            echo "📦 Found package.json in $DIR"
+            echo "🔧 Installing dependencies..."
+            cd "$DIR"
+            npm install
+            
+            echo "🏗️ Building project..."
+            npm run build
+            
+            echo "🧹 Cleaning up node_modules..."
+            rm -rf node_modules
+            
+            # Return to the original directory
+            cd - > /dev/null
+            
+            echo "✅ Completed building $DIR"
+          else
+            echo "⚠️ No package.json found in $DIR, skipping."
+          fi
+        done
+        
+        echo "🎉 Build process completed!"
