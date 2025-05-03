@@ -28,18 +28,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 # You need this step to checkout your code first
       - name: Build Projects
         uses: KLIXPERT-io/buildme@v1
         with:
-          node-version: '18' # Optional, defaults to 18 if not specified
+          node-version: '22' # Optional, defaults to 22 if not specified
 ```
 
 ### Inputs
 
 | Name | Description | Required | Default |
 |------|-------------|----------|---------|
-| `node-version` | Node.js version to use | No | `'18'` |
+| `node-version` | Node.js version to use | No | `'22'` |
 
 ## Creating a buildable project
 
