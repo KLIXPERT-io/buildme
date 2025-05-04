@@ -1,6 +1,9 @@
 name: '.buildme - Simple Build Action'
 description: 'Automatically searches for .buildme files in your repository and builds the associated projects with npm.'
 author: 'Florian Narr - KLIXPERT.io'
+branding:
+  icon: 'command'
+  color: 'red'
 inputs:
   node-version:
     description: 'Node.js version to use'
