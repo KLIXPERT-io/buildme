@@ -1,5 +1,5 @@
-name: 'Build Projects'
-description: 'Automatically builds projects with .buildme files'
+name: '.buildme - Simple Build Action'
+description: 'Automatically searches for .buildme files in your repository and builds the associated projects with npm.'
 author: 'Florian Narr - KLIXPERT.io'
 inputs:
   node-version:
